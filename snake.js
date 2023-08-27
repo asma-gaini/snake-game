@@ -3,8 +3,15 @@ const ctx = gameCanvas.getContext('2d');
 
 let foodX ;
 let foodY;
-let dx = 0;
+let dx = 10;
 let dy = 0;
+
+/*vaghti chand dokme hamzaman bokhore hang mikone chon modatesh tamom nashode
+pas miyaym moteghayere changingDirection ru dar enteda false mizarim 
+va vaghti true hast migim code haye harekatimon ejra nashe  va zamani false mikonim k 
+tu main kamek code ha ejra shode bashe k hang nakone yani ghbl ejra kamel ye klid
+klid dg kar nemikone */
+let changingDirection = false;
 
 // harekat snak dar jahat haye mokhtalef
 document.addEventListener('keydown' , changeDirection);
@@ -13,6 +20,11 @@ function changeDirection(event){
     const RIGHT_KEY = 39;
     const Up_KEY = 38;
     const DOWN_KEY = 40;
+
+    if( changingDirection )
+    return;
+
+    changingDirection = true;
 
     const keyPressed = event.keyCode;
     if (keyPressed == LEFT_KEY && dx != 10) {
@@ -45,13 +57,14 @@ main();
 
 function main() {
     setTimeout(() => {
+        changingDirection = false;
         clearCanvas();
         drowFood();
         advanceSnake();
         drowSnake();
 
         main();
-    }, 200)
+    }, 100)
 }
 
 // rasm boom dar safhe va har bar pak kardan an
