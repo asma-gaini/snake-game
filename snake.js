@@ -1,6 +1,37 @@
 const gameCanvas = document.getElementById("gameCanvas");
 const ctx = gameCanvas.getContext('2d');
 
+let foodX ;
+let foodY;
+let dx = 0;
+let dy = 0;
+
+// harekat snak dar jahat haye mokhtalef
+document.addEventListener('keydown' , changeDirection);
+function changeDirection(event){
+    const LEFT_KEY = 37;
+    const RIGHT_KEY = 39;
+    const Up_KEY = 38;
+    const DOWN_KEY = 40;
+
+    const keyPressed = event.keyCode;
+    if (keyPressed == LEFT_KEY && dx != 10) {
+        dx = -10 ;
+        dy = 0;
+    }
+    if(keyPressed == RIGHT_KEY && dx != -10) {
+        dx = 10 ;
+        dy = 0;
+    }
+    if (keyPressed == Up_KEY && dy != 10) {
+        dx = 0 ;
+        dy = -10;  
+    }
+    if (keyPressed == DOWN_KEY && dy != -10) {
+        dx = 0 ;
+        dy = 10;
+    }
+}
 
 let snake = [
    {x : 150 , y : 150},
@@ -10,9 +41,8 @@ let snake = [
    {x : 110 , y : 150}
 ]
 
-let foodX ;
-let foodY;
- 
+main();
+
 function main() {
     setTimeout(() => {
         clearCanvas();
@@ -21,7 +51,7 @@ function main() {
         drowSnake();
 
         main();
-    }, 300)
+    }, 200)
 }
 
 // rasm boom dar safhe va har bar pak kardan an
@@ -46,12 +76,13 @@ let creatFood = () => {
     })
 }
 
-// harekat snak dar jahat bala 
+// ejra va harekat snake dar jahat ha
 let advanceSnake = () => {
-    const head = {x : snake[0].x + 0 , y: snake[0].y - 10};
+    const head = {x : snake[0].x + dx , y : snake[0].y + dy};
     snake.unshift(head);
     snake.pop();
-} 
+}
+
 
 // rasm kardan mokhtasat snake dar boom
 let drowSnake = () => snake.forEach(drowSnakePart);
@@ -73,4 +104,3 @@ let drowFood = () => {
 creatFood();
 
 
-main();
