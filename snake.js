@@ -5,6 +5,7 @@ let foodX ;
 let foodY;
 let dx = 10;
 let dy = 0;
+score = 0;
 
 /*vaghti chand dokme hamzaman bokhore hang mikone chon modatesh tamom nashode
 pas miyaym moteghayere changingDirection ru dar enteda false mizarim 
@@ -22,7 +23,7 @@ function changeDirection(event){
     const DOWN_KEY = 40;
 
     if( changingDirection )
-    return;
+        return;
 
     changingDirection = true;
 
@@ -56,6 +57,10 @@ let snake = [
 main();
 
 function main() {
+
+    if(didGameEnd())
+        return;
+
     setTimeout(() => {
         changingDirection = false;
         clearCanvas();
@@ -65,6 +70,21 @@ function main() {
 
         main();
     }, 100)
+}
+
+function didGameEnd(){
+    for (let i = 1; i < snake.length; i++) {
+        if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
+            return true;
+        }
+    }
+
+    const hitLeftWall = snake[0].x < 0;
+    const hitRightWall = snake[0].x > gameCanvas.width -10;
+    const hitUpWall = snake[0].y < 0;
+    const hitDownWall = snake[0].y > gameCanvas.height -10;
+
+    return hitLeftWall || hitRightWall || hitUpWall || hitDownWall;
 }
 
 // rasm boom dar safhe va har bar pak kardan an
@@ -89,11 +109,21 @@ let creatFood = () => {
     })
 }
 
-// ejra va harekat snake dar jahat ha
+// ejra va harekat snake dar jahat ha ba b vojod avordan yek head va sar jadid baraye snak va delete dom
 let advanceSnake = () => {
     const head = {x : snake[0].x + dx , y : snake[0].y + dy};
     snake.unshift(head);
-    snake.pop();
+
+    // age head snake ru food bud  score + she va food jadid  va dom pak nashe
+    if(head.x == foodX && head.y == foodY){
+        score += 10;
+        document.getElementById('score').innerHTML = score;
+        creatFood();
+    }
+    else{
+        // ag ru food nabod domesh pak she 
+        snake.pop();
+    }
 }
 
 
